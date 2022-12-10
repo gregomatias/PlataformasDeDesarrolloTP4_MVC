@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TP4.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._dni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._mail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._intentosFallidos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._esUsuarioAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._bloqueado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item._dni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._mail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._intentosFallidos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._esUsuarioAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._bloqueado)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item._id_usuario">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item._id_usuario">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item._id_usuario">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

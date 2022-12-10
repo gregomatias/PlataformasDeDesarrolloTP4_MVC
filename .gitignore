@@ -1,0 +1,11 @@
+## Ignore Visual Studio temporary files, build results, and
+
+/bin/
+/Migrations/
+/obj/
+/Properties/
+/wwwroot/
+/appsettings.json
+/appsettings.Development.json
+*.csproj
+*.csproj.user

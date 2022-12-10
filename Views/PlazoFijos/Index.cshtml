@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TP4.Models.PlazoFijo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._titular)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._monto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._fechaIni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._fechaFin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._tasa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._pagado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item._titular._id_usuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._monto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._fechaIni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._fechaFin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._tasa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._pagado)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item._id_plazoFijo">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item._id_plazoFijo">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item._id_plazoFijo">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

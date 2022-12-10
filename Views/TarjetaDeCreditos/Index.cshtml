@@ -1,0 +1,59 @@
+﻿@model IEnumerable<TP4.Models.TarjetaDeCredito>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._titular)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._codigoV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._limite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._consumos)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item._titular._id_usuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._codigoV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._limite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._consumos)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item._id_tarjeta">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item._id_tarjeta">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item._id_tarjeta">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
