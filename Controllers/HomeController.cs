@@ -2,6 +2,10 @@
 using System.Diagnostics;
 using TP4.Models;
 
+//1.- AÑADIR LA AUTHORIZACION
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
+
 namespace TP4.Controllers
 {
     public class HomeController : Controller
@@ -13,6 +17,8 @@ namespace TP4.Controllers
             _logger = logger;
         }
 
+        //  //[Authorize(Roles  = "True")]
+        [Authorize]
         public IActionResult Index()
         {
             return View();

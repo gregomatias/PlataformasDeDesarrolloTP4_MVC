@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TP4.Models;
+//1.- PRIMERO =================================================================
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,14 @@ builder.Services.AddDbContext<MyContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StringDeConexion"));
 });
+
+//2.- SEGUNDO - CONFIGURAR NUESTRA COOKIE DE AUTENTICACION =================
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option => {
+        option.LoginPath = "/Login/Index";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        option.AccessDeniedPath = "/Home/Privacy";
+    });
 
 var app = builder.Build();
 
@@ -25,6 +35,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+//3.- TERCERO ==================================================================
+app.UseAuthentication();
 
 app.UseAuthorization();
 

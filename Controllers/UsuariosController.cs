@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using TP4.Models;
 
 namespace TP4.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
         private readonly MyContext _context;
@@ -19,6 +21,7 @@ namespace TP4.Controllers
         }
 
         // GET: Usuarios
+        [Authorize]
         public async Task<IActionResult> Index()
         {
 

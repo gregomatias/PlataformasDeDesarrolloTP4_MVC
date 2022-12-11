@@ -1,6 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Policy;
 using TP4.Models;
+
+//1.- REFERENCES AUTHENTICATION COOKIE
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+
 
 namespace TP4.Controllers
 {
@@ -19,7 +26,7 @@ namespace TP4.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Logueo(int _dni, string _password)
+        public async Task<IActionResult> Logueo(int _dni, string _password)
         {
 
             try
@@ -28,15 +35,45 @@ namespace TP4.Controllers
 
                 if (usuario != null)
                 {
-        
-                    return Redirect("/Home/Index");
+
+                    //2.- CONFIGURACION DE LA AUTENTICACION
+                    #region AUTENTICACTION
+                    var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, usuario._apellido),
+                    new Claim("Correo", usuario._mail),
+                    new Claim("EsAdmin", usuario._esUsuarioAdmin.ToString()),
+                     new Claim(ClaimTypes.Role, usuario._esUsuarioAdmin.ToString()),
+                     
+                };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    #endregion
+
+
+                 //   return Redirect("/Home/Index");
+                    return RedirectToAction("Index", "Home");
                 }
-          
+
 
             }
             catch (Exception ex) { }
 
             return Redirect("Index");
         }
+
+        public async Task<IActionResult> Salir()
+        {
+            //3.- CONFIGURACION DE LA AUTENTICACION
+            #region AUTENTICACTION
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            #endregion
+
+            return RedirectToAction("Index");
+
+        }
+
     }
 }
