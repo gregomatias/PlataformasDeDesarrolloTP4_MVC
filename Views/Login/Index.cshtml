@@ -1,0 +1,46 @@
+﻿@model TP4.Models.Usuario
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_LoginLayout";
+}
+
+
+
+<h1>Logueo</h1>
+
+<h4>Ingrese sus datos</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Logueo">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="_dni" class="control-label">DNI</label>
+                    <input asp-for="_dni" class="form-control" />
+                    <span asp-validation-for="_dni" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="_password" class="control-label">Password</label>
+                    <input asp-for="_password" class="form-control" />
+                    <span asp-validation-for="_password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Aceptar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

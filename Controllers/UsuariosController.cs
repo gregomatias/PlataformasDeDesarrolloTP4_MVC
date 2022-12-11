@@ -21,7 +21,8 @@ namespace TP4.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-              return View(await _context.usuarios.ToListAsync());
+
+             return View(await _context.usuarios.ToListAsync());
         }
 
         // GET: Usuarios/Details/5
