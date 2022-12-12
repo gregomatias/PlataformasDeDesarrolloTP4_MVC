@@ -4,11 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Caja de Ahorro</h1>
 
 <p>
-    <a asp-action="Create" asp-route-id="@ViewBag.id">Create New</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.id">Nueva</a> |
+    <a asp-action="Create" asp-route-id="@ViewBag.id">Depositar</a> |
+    <a asp-action="Create" asp-route-id="@ViewBag.id">Retirar</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
