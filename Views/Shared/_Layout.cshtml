@@ -23,20 +23,23 @@
                         @if (User.IsInRole("True")) //Solo el admin
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-route-id="@ViewBag.id" asp-action="Index">Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UsuarioCajaDeAhorros" asp-route-id="@ViewBag.id" asp-action="Index">UsuarioCajaDeAhorros</a>
                             </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="CajaDeAhorros" asp-route-id="@ViewBag.id" asp-action="Index">Caja De Ahorro</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TarjetaDeCreditos" asp-action="Index">Tarjetas de Crédito</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TarjetaDeCreditos" asp-route-id="@ViewBag.id" asp-action="Index">Tarjetas de Crédito</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PlazoFijos" asp-action="Index">Plazo Fijo</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PlazoFijos" asp-route-id="@ViewBag.id" asp-action="Index">Plazo Fijo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pagos" asp-action="Index">Pagos</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Pagos" asp-route-id="@ViewBag.id" asp-action="Index">Pagos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Movimientos" asp-route-id=@ViewBag.id asp-action="Index">Movimientos</a>

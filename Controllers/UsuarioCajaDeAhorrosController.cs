@@ -21,9 +21,10 @@ namespace TP4.Controllers
         }
 
         // GET: UsuarioCajaDeAhorros
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var myContext = _context.UsuarioCajaDeAhorro.Include(u => u.caja).Include(u => u.user);
+            ViewBag.id = id;
             return View(await myContext.ToListAsync());
 
          

@@ -24,8 +24,8 @@ namespace TP4.Controllers
         public async Task<IActionResult> Index(int? id)
 
         {
-           
-             _context.usuarios.Include(u => u.cajas).Load();
+
+            _context.usuarios.Include(u => u.cajas).Load();
             Usuario usuario = _context.usuarios.Where(u => u._id_usuario == id).FirstOrDefault();
 
 
@@ -40,7 +40,7 @@ namespace TP4.Controllers
                 else
                 {
                     ViewBag.id = id;
-                    return View( usuario.cajas.ToList());
+                    return View(usuario.cajas.ToList());
                 }
             }
 
@@ -77,7 +77,7 @@ namespace TP4.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int? id,[Bind("_id_caja,_cbu,_saldo=0")] CajaDeAhorro cajaDeAhorro)
+        public async Task<IActionResult> Create(int? id, [Bind("_id_caja,_cbu,_saldo=0")] CajaDeAhorro cajaDeAhorro)
         {
             //Genera secuencia unica de CBU o Tarjeta
             DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
@@ -182,14 +182,139 @@ namespace TP4.Controllers
             {
                 _context.cajas.Remove(cajaDeAhorro);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CajaDeAhorroExists(int id)
         {
-          return _context.cajas.Any(e => e._id_caja == id);
+            return _context.cajas.Any(e => e._id_caja == id);
         }
-    }
+
+        public async Task<IActionResult> Depositar(int? id, int? id_caja)
+        {
+            if (id_caja == null || _context.cajas == null)
+            {
+                return NotFound();
+            }
+
+            var cajaDeAhorro = await _context.cajas.FindAsync(id_caja);
+            if (cajaDeAhorro == null)
+            {
+                return NotFound();
+            }
+            //Id de usuario
+            ViewBag.id = id;
+            return View(cajaDeAhorro);
+        }
+
+        //Post Depositar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Depositar(int id,int _id_caja, double _saldo)
+
+        {
+            CajaDeAhorro cajaDeAhorro = _context.cajas.Where(c => c._id_caja == _id_caja).FirstOrDefault();
+            
+            cajaDeAhorro._saldo = cajaDeAhorro._saldo + Math.Abs(_saldo);
+
+            Movimiento movimiento = new Movimiento(_id_caja, "Deposito", _saldo, DateTime.Now);
+            cajaDeAhorro._movimientos.Add(movimiento);
+            _context.movimientos.Add(movimiento);
+
+            if ( cajaDeAhorro==null)
+            {
+                return Problem("Ocurrio un problema, consulte con el administrador");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(cajaDeAhorro);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CajaDeAhorroExists(cajaDeAhorro._id_caja))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", new { id = id });
+            }
+
+            return RedirectToAction("Index", new { id = id });
+        }
+
+        public async Task<IActionResult> Retirar(int? id, int? id_caja)
+        {
+            if (id_caja == null || _context.cajas == null)
+            {
+                return NotFound();
+            }
+
+            var cajaDeAhorro = await _context.cajas.FindAsync(id_caja);
+            if (cajaDeAhorro == null)
+            {
+                return NotFound();
+            }
+            //Id de usuario
+            ViewBag.id = id;
+            return View(cajaDeAhorro);
+        }
+
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Retirar(int id, int _id_caja, double _saldo)
+
+        {
+
+
+            CajaDeAhorro cajaDeAhorro = _context.cajas.Where(c => c._id_caja == _id_caja).FirstOrDefault();
+            cajaDeAhorro._saldo = cajaDeAhorro._saldo - Math.Abs(_saldo);
+            Movimiento movimiento = new Movimiento(_id_caja, "Retiro", _saldo, DateTime.Now);
+            cajaDeAhorro._movimientos.Add(movimiento);
+            _context.movimientos.Add(movimiento);
+
+            if (cajaDeAhorro==null)
+            {
+               
+                return Problem("Ocurrio un problema, consulte con el administrador");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(cajaDeAhorro);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CajaDeAhorroExists(cajaDeAhorro._id_caja))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", new { id = id });
+            }
+
+            return RedirectToAction("Index", new { id = id });
+        }
+
+
+    }//Fin Clase
+
+
 }

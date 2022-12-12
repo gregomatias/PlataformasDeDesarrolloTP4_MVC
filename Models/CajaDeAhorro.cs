@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -72,8 +73,8 @@ public  class CajaDeAhorro
 
 		private double saldo;
 
-
-		public double _saldo
+    [Range(1, double.MaxValue, ErrorMessage = "Ingrese un valor mayor a 1")]
+    public double _saldo
 		{
 			get { return saldo; }
 			set { saldo = value; }
