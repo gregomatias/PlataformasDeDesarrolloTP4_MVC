@@ -34,10 +34,12 @@ namespace TP4.Controllers
             {
                 if (usuario._esUsuarioAdmin)
                 {
+                    ViewBag.id = id;
                     return View(await _context.cajas.ToListAsync());
                 }
                 else
                 {
+                    ViewBag.id = id;
                     return View( usuario.cajas.ToList());
                 }
             }
@@ -75,14 +77,25 @@ namespace TP4.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("_id_caja,_cbu,_saldo")] CajaDeAhorro cajaDeAhorro)
+        public async Task<IActionResult> Create(int? id,[Bind("_id_caja,_cbu,_saldo=0")] CajaDeAhorro cajaDeAhorro)
         {
+            //Genera secuencia unica de CBU o Tarjeta
+            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+            string fecha = now.ToString("yyyyMMddHHmmssfff");
+
+            Usuario usuario = _context.usuarios.Where(u => u._id_usuario == id).FirstOrDefault();
+            usuario.cajas.Add(cajaDeAhorro);
+            _context.Update(usuario);
+
             if (ModelState.IsValid)
             {
                 _context.Add(cajaDeAhorro);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = id });
             }
+            ViewBag.id = id;
             return View(cajaDeAhorro);
         }
 
