@@ -25,6 +25,8 @@ namespace TP4.Controllers
         {
             var myContext = _context.UsuarioCajaDeAhorro.Include(u => u.caja).Include(u => u.user);
             return View(await myContext.ToListAsync());
+
+         
         }
 
         // GET: UsuarioCajaDeAhorros/Details/5

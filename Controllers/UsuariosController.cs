@@ -10,7 +10,8 @@ using TP4.Models;
 
 namespace TP4.Controllers
 {
-    [Authorize]
+    //Solo el admin EsAdmin=True
+    [Authorize(Roles = "True")]
     public class UsuariosController : Controller
     {
         private readonly MyContext _context;
@@ -21,11 +22,12 @@ namespace TP4.Controllers
         }
 
         // GET: Usuarios
-        [Authorize]
+        
         public async Task<IActionResult> Index()
         {
 
-             return View(await _context.usuarios.ToListAsync());
+         
+            return View(await _context.usuarios.ToListAsync());
         }
 
         // GET: Usuarios/Details/5

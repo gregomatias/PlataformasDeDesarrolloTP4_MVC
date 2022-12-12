@@ -19,8 +19,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        @if (User.IsInRole("True")) //Solo el admin
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-area="" asp-controller="CajaDeAhorros" asp-action="Index">Caja De Ahorro</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CajaDeAhorros" asp-route-id="@ViewBag.id" asp-action="Index">Caja De Ahorro</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="TarjetaDeCreditos" asp-action="Index">Tarjetas de Crédito</a>
@@ -32,7 +39,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pagos" asp-action="Index">Pagos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Movimientos" asp-action="Index">Movimientos</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Movimientos" asp-route-id=@ViewBag.id asp-action="Index">Movimientos</a>
                         </li>
 
                         <li class="nav-item">

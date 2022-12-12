@@ -54,7 +54,8 @@ namespace TP4.Controllers
 
 
                  //   return Redirect("/Home/Index");
-                    return RedirectToAction("Index", "Home");
+                 //   return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home", new { IdUsuarioLogueado = usuario._id_usuario });
                 }
 
 

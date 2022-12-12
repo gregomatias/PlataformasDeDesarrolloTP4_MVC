@@ -19,8 +19,9 @@ namespace TP4.Controllers
 
         //  //[Authorize(Roles  = "True")]
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(int IdUsuarioLogueado)
         {
+            ViewBag.id = IdUsuarioLogueado;
             return View();
         }
 

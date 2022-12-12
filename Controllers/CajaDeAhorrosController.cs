@@ -21,9 +21,29 @@ namespace TP4.Controllers
         }
 
         // GET: CajaDeAhorros
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
+
         {
-              return View(await _context.cajas.ToListAsync());
+           
+             _context.usuarios.Include(u => u.cajas).Load();
+            Usuario usuario = _context.usuarios.Where(u => u._id_usuario == id).FirstOrDefault();
+
+
+
+            if (usuario != null)
+            {
+                if (usuario._esUsuarioAdmin)
+                {
+                    return View(await _context.cajas.ToListAsync());
+                }
+                else
+                {
+                    return View( usuario.cajas.ToList());
+                }
+            }
+
+            return NotFound();
+
         }
 
         // GET: CajaDeAhorros/Details/5
