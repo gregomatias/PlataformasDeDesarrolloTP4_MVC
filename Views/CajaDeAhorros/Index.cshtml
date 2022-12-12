@@ -30,11 +30,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item._saldo)
             </td>
+                @if (User.IsInRole("True")) //Solo el admin
+                {
             <td>
                 <a asp-action="Edit" asp-route-id="@item._id_caja">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item._id_caja">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item._id_caja">Delete</a>
             </td>
+                }
         </tr>
 }
     </tbody>

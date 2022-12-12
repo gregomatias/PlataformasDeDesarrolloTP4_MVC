@@ -17,11 +17,14 @@
                 <input asp-for="_cbu" class="form-control" />
                 <span asp-validation-for="_cbu" class="text-danger"></span>
             </div>
+            @if (User.IsInRole("True")) //Solo el admin
+            {
             <div class="form-group">
                 <label asp-for="_saldo" class="control-label"></label>
                 <input asp-for="_saldo" class="form-control" />
                 <span asp-validation-for="_saldo" class="text-danger"></span>
             </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
