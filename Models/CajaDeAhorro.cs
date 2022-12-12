@@ -73,7 +73,7 @@ public  class CajaDeAhorro
 
 		private double saldo;
 
-    [Range(1, double.MaxValue, ErrorMessage = "Ingrese un valor mayor a 1")]
+    [Range(0, double.MaxValue, ErrorMessage = "Ingrese un valor mayor a 0")]
     public double _saldo
 		{
 			get { return saldo; }

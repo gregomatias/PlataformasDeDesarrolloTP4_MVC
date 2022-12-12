@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Solicitud de cuenta</h1>
 
 <h4>CajaDeAhorro</h4>
 <hr />
@@ -13,8 +13,8 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="_cbu" class="control-label"></label>
-                <input asp-for="_cbu" class="form-control" />
+                <label asp-for="_cbu" class="control-label">El CBU de us nueva cuenta es: </label>
+                <input readonly asp-for="_cbu" value="@ViewBag.nuevo_cbu" class="form-control" />
                 <span asp-validation-for="_cbu" class="text-danger"></span>
             </div>
             @if (User.IsInRole("True")) //Solo el admin
@@ -26,14 +26,14 @@
             </div>
             }
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Solicitar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
 </div>
 
 @section Scripts {

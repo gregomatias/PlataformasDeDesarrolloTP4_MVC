@@ -67,8 +67,15 @@ namespace TP4.Controllers
         }
 
         // GET: CajaDeAhorros/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
+            //Genera secuencia unica de CBU o Tarjeta
+            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+            string nuevo_cbu = now.ToString("yyyyMMddHHmmssfff");
+            nuevo_cbu = nuevo_cbu + id;
+
+            ViewBag.id = id;
+            ViewBag.nuevo_cbu = nuevo_cbu;
             return View();
         }
 
@@ -79,9 +86,7 @@ namespace TP4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int? id, [Bind("_id_caja,_cbu,_saldo=0")] CajaDeAhorro cajaDeAhorro)
         {
-            //Genera secuencia unica de CBU o Tarjeta
-            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
-            string fecha = now.ToString("yyyyMMddHHmmssfff");
+
 
             Usuario usuario = _context.usuarios.Where(u => u._id_usuario == id).FirstOrDefault();
             usuario.cajas.Add(cajaDeAhorro);
@@ -93,6 +98,7 @@ namespace TP4.Controllers
 
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
+
                 return RedirectToAction("Index", new { id = id });
             }
             ViewBag.id = id;
