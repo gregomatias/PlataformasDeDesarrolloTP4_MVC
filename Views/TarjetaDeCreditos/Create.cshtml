@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Tarjeta de Crédito</h1>
 
-<h4>TarjetaDeCredito</h4>
+<h4>Solicitud</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,37 +14,37 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="_id_usuario" class="control-label"></label>
-                <select asp-for="_id_usuario" class ="form-control" asp-items="ViewBag._id_usuario"></select>
+                <select asp-for="_id_usuario"  class ="form-control"  asp-items="ViewBag._id_usuario"></select>
             </div>
             <div class="form-group">
                 <label asp-for="_numero" class="control-label"></label>
-                <input asp-for="_numero" class="form-control" />
+                <input readonly asp-for="_numero" value="@ViewBag.nuevo_numero" class="form-control" />
                 <span asp-validation-for="_numero" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="_codigoV" class="control-label"></label>
-                <input asp-for="_codigoV" class="form-control" />
+                <input readonly asp-for="_codigoV" value="@ViewBag.codigoV" class="form-control" />
                 <span asp-validation-for="_codigoV" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="_limite" class="control-label"></label>
-                <input asp-for="_limite" class="form-control" />
+                <input readonly asp-for="_limite" value="@ViewBag.limite"  class="form-control" />
                 <span asp-validation-for="_limite" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="_consumos" class="control-label"></label>
-                <input asp-for="_consumos" class="form-control" />
+                <input readonly asp-for="_consumos" value="@ViewBag.consumos"  class="form-control" />
                 <span asp-validation-for="_consumos" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Solicitar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
 </div>
 
 @section Scripts {

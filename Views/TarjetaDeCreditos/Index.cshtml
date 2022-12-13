@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Tarjetas de Crédito</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.id">Pedí tu Tarjeta</a>
 </p>
 <table class="table">
     <thead>
@@ -49,9 +49,14 @@
                 @Html.DisplayFor(modelItem => item._consumos)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item._id_tarjeta">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item._id_tarjeta">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item._id_tarjeta">Delete</a>
+                    <a asp-action="Consumo" asp-route-id="@ViewBag.id" asp-route-id_caja="@item._id_tarjeta">Nuevo Consumo</a>
+                    <span style="color:black">|</span> <a asp-action="Pagar" asp-route-id="@ViewBag.id" asp-route-id_caja="@item._id_tarjeta">Pagar Tarjeta</a>
+                    @if (User.IsInRole("True")) //Solo el admin
+                    {
+                        <span style="color:black">|</span>  <a asp-action="Edit" asp-route-id="@item._id_tarjeta">Edit</a>
+                        <span style="color:black">|</span>  <a asp-action="Details" asp-route-id="@item._id_tarjeta">Details</a>
+                        <span style="color:black">|</span>   <a asp-action="Delete" asp-route-id="@item._id_tarjeta">Delete</a>
+                    }
             </td>
         </tr>
 }
