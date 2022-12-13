@@ -4,11 +4,13 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Tarjeta de Crédito</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Cancelar</h3>
+
+<h4>Estas seguro que deseas cancelar el servicio?</h4>
 <div>
-    <h4>TarjetaDeCredito</h4>
+    
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -45,7 +47,18 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="_id_tarjeta" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Aceptar" class="btn btn-danger" /> |
+  
     </form>
+
+    <div>
+        <span class="text-danger">@ViewBag.mensaje</span>
+    </div>
+
+    <div>
+
+        <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
+    </div>
+
+
 </div>

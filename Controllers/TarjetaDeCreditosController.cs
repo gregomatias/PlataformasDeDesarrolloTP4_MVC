@@ -182,6 +182,8 @@ namespace TP4.Controllers
                 return NotFound();
             }
 
+            ViewBag.id = id;
+            ViewData["mensaje"] = "";
             return View(tarjetaDeCredito);
         }
 
@@ -190,18 +192,34 @@ namespace TP4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+
             if (_context.tarjetas == null)
             {
                 return Problem("Entity set 'MyContext.tarjetas'  is null.");
             }
             var tarjetaDeCredito = await _context.tarjetas.FindAsync(id);
+           
+
             if (tarjetaDeCredito != null)
             {
-                _context.tarjetas.Remove(tarjetaDeCredito);
+                if (tarjetaDeCredito._consumos == 0){
+
+                    _context.tarjetas.Remove(tarjetaDeCredito);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    ViewBag.id = id;
+                    ViewData["mensaje"] = "La tarjeta debe estar en cero para poder cancelarla";
+                    return View(tarjetaDeCredito);
+                }
+              
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = id });
         }
 
         private bool TarjetaDeCreditoExists(int id)
@@ -209,7 +227,7 @@ namespace TP4.Controllers
             return _context.tarjetas.Any(e => e._id_tarjeta == id);
         }
 
-        // GET: Parametro desde el index asp-route-id_tarjeta="@item._id_tarjeta
+        // GET: Pagar Parametro desde el index asp-route-id_tarjeta="@item._id_tarjeta
         public IActionResult Pagar(int id, int id_tarjeta)
         {
             _context.usuarios.Include(u => u.cajas).Load();

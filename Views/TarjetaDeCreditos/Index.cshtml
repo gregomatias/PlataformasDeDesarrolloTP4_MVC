@@ -31,33 +31,35 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item._titular._id_usuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._numero)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._codigoV)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._limite)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._consumos)
-            </td>
-            <td>
-                    <span style="color:black">|</span> <a asp-action="Pagar" asp-route-id="@ViewBag.id" asp-route-id_tarjeta="@item._id_tarjeta">Pagar Tarjeta</a>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item._titular._id_usuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._codigoV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._limite)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._consumos)
+                </td>
+                <td>
+                    <a asp-action="Pagar" asp-route-id="@ViewBag.id" asp-route-id_tarjeta="@item._id_tarjeta">Pagar Tarjeta</a>
+                    <span style="color:black">|</span>   <a asp-action="Delete" asp-route-id="@item._id_tarjeta">Solicitar Baja</a>
                     @if (User.IsInRole("True")) //Solo el admin
                     {
                         <span style="color:black">|</span>  <a asp-action="Edit" asp-route-id="@item._id_tarjeta">Edit</a>
                         <span style="color:black">|</span>  <a asp-action="Details" asp-route-id="@item._id_tarjeta">Details</a>
-                        <span style="color:black">|</span>   <a asp-action="Delete" asp-route-id="@item._id_tarjeta">Delete</a>
+
                     }
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
