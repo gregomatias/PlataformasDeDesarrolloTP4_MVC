@@ -208,5 +208,72 @@ namespace TP4.Controllers
         {
             return _context.tarjetas.Any(e => e._id_tarjeta == id);
         }
+
+        // GET: Parametro desde el index asp-route-id_tarjeta="@item._id_tarjeta
+        public IActionResult Pagar(int id,int id_tarjeta)
+        {
+            _context.usuarios.Include(u => u.cajas).Load();
+            Usuario usuario = _context.usuarios.Where(u => u._id_usuario == id).FirstOrDefault();
+            TarjetaDeCredito tarjeta = _context.tarjetas.Where(t => t._id_tarjeta == id_tarjeta).FirstOrDefault();
+
+            if (usuario == null || tarjeta==null) return NotFound();
+
+            if (usuario._esUsuarioAdmin)
+            {
+                ViewData["_cbu"] = new SelectList(_context.cajas, "_cbu", "_cbu");
+            }
+            else
+            {
+
+                ViewData["_cbu"] = new SelectList(usuario.cajas.ToList(), "_cbu", "_cbu");
+            }
+
+
+        
+            ViewBag.id = id;
+            ViewData["mensaje"] = "";
+            return View(tarjeta);
+
+        }
+
+        // POST: TarjetaDeCreditos/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Pagar(int id,int _id_tarjeta,double _consumos,string _numero,string cbu)
+        {
+
+            TarjetaDeCredito tarjeta = _context.tarjetas.Where(t => t._id_tarjeta == _id_tarjeta).FirstOrDefault();
+            CajaDeAhorro caja = _context.cajas.Where(c => c._cbu == cbu).FirstOrDefault();
+
+            if (caja==null ||tarjeta == null) return NotFound();
+
+            if (caja._saldo >= tarjeta._consumos)
+            {
+                caja._saldo -= tarjeta._consumos;
+                tarjeta._consumos = 0;
+
+            }
+            else
+            {
+                ViewBag.id = id;
+                ViewData["mensaje"] = "Saldo de la cuenta insuficiente";
+                return View(tarjeta);
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(caja);
+                _context.Update(tarjeta);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", new { id = id });
+            }
+
+
+            return RedirectToAction("Index", new { id = id });
+        }
+
+
     }
 }
