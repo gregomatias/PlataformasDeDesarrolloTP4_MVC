@@ -85,7 +85,7 @@ namespace TP4.Controllers
             //Genera secuencia unica de CBU o Tarjeta
             DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
             string nuevo_numero = now.ToString("yyyyMMddHHmmssfff");
-            nuevo_numero = "T"+nuevo_numero + id;
+            nuevo_numero = "T" + nuevo_numero + id;
 
             ViewBag.id = id;
             ViewBag.nuevo_numero = nuevo_numero;
@@ -101,7 +101,7 @@ namespace TP4.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id,[Bind("_id_tarjeta,_id_usuario,_numero,_codigoV,_limite,_consumos")] TarjetaDeCredito tarjetaDeCredito)
+        public async Task<IActionResult> Create(int id, [Bind("_id_tarjeta,_id_usuario,_numero,_codigoV,_limite,_consumos")] TarjetaDeCredito tarjetaDeCredito)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace TP4.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = id });
             }
-          
+
             return RedirectToAction("Index", new { id = id });
         }
 
@@ -210,13 +210,13 @@ namespace TP4.Controllers
         }
 
         // GET: Parametro desde el index asp-route-id_tarjeta="@item._id_tarjeta
-        public IActionResult Pagar(int id,int id_tarjeta)
+        public IActionResult Pagar(int id, int id_tarjeta)
         {
             _context.usuarios.Include(u => u.cajas).Load();
             Usuario usuario = _context.usuarios.Where(u => u._id_usuario == id).FirstOrDefault();
             TarjetaDeCredito tarjeta = _context.tarjetas.Where(t => t._id_tarjeta == id_tarjeta).FirstOrDefault();
 
-            if (usuario == null || tarjeta==null) return NotFound();
+            if (usuario == null || tarjeta == null) return NotFound();
 
             if (usuario._esUsuarioAdmin)
             {
@@ -229,30 +229,44 @@ namespace TP4.Controllers
             }
 
 
-        
+
             ViewBag.id = id;
             ViewData["mensaje"] = "";
             return View(tarjeta);
 
         }
 
-        // POST: TarjetaDeCreditos/Create
+        // POST: TarjetaDeCreditos/Pagar
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Pagar(int id,int _id_tarjeta,double _consumos,string _numero,string cbu)
+        public async Task<IActionResult> Pagar(int id, int _id_tarjeta, double _consumos, string _numero, string cbu)
         {
 
             TarjetaDeCredito tarjeta = _context.tarjetas.Where(t => t._id_tarjeta == _id_tarjeta).FirstOrDefault();
             CajaDeAhorro caja = _context.cajas.Where(c => c._cbu == cbu).FirstOrDefault();
 
-            if (caja==null ||tarjeta == null) return NotFound();
+            if (caja == null || tarjeta == null) return NotFound();
+
+
 
             if (caja._saldo >= tarjeta._consumos)
             {
                 caja._saldo -= tarjeta._consumos;
                 tarjeta._consumos = 0;
+                Movimiento movimiento = new Movimiento(caja._id_caja, "Pago Tarjeta", _consumos, DateTime.Now);
+                caja._movimientos.Add(movimiento);
+
+                if (ModelState.IsValid)
+                {
+
+                    _context.Update(caja);
+                    _context.Update(tarjeta);
+                    _context.movimientos.Add(movimiento);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", new { id = id });
+                }
 
             }
             else
@@ -262,13 +276,7 @@ namespace TP4.Controllers
                 return View(tarjeta);
             }
 
-            if (ModelState.IsValid)
-            {
-                _context.Update(caja);
-                _context.Update(tarjeta);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", new { id = id });
-            }
+
 
 
             return RedirectToAction("Index", new { id = id });
