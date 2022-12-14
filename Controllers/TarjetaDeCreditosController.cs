@@ -190,7 +190,7 @@ namespace TP4.Controllers
         // POST: TarjetaDeCreditos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int _id_usuario, int _id_tarjeta)
         {
 
 
@@ -198,7 +198,7 @@ namespace TP4.Controllers
             {
                 return Problem("Entity set 'MyContext.tarjetas'  is null.");
             }
-            var tarjetaDeCredito = await _context.tarjetas.FindAsync(id);
+            var tarjetaDeCredito = await _context.tarjetas.FindAsync(_id_tarjeta);
            
 
             if (tarjetaDeCredito != null)
@@ -210,7 +210,7 @@ namespace TP4.Controllers
                 }
                 else
                 {
-                    ViewBag.id = id;
+                    ViewBag.id = _id_usuario;
                     ViewData["mensaje"] = "La tarjeta debe estar en cero para poder cancelarla";
                     return View(tarjetaDeCredito);
                 }
@@ -219,7 +219,7 @@ namespace TP4.Controllers
 
 
             //return RedirectToAction(nameof(Index));
-            return RedirectToAction("Index", new { id = id });
+            return RedirectToAction("Index", new { id = _id_usuario });
         }
 
         private bool TarjetaDeCreditoExists(int id)

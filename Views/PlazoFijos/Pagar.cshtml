@@ -1,0 +1,46 @@
+﻿@model TP4.Models.PlazoFijo
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Plazo Fijo</h1>
+
+<h4>Pagar</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Pagar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label  class="control-label">Seleccione la cuenta de pago: </label>
+                <select name="cbu" class="form-control" asp-items="ViewBag._cbu"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="_monto" class="control-label">Monto base</label>
+                <input readonly asp-for="_monto" class="form-control" />
+                <span asp-validation-for="_monto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden"  asp-for="_id_plazoFijo" class="form-control" />
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Pagar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <span class="text-danger">@ViewBag.mensaje</span>
+</div>
+
+<div>
+   
+    <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

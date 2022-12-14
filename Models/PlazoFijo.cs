@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,23 +10,14 @@ namespace TP4.Models;
     public class PlazoFijo
     {
 	public PlazoFijo() { }
-        public PlazoFijo(double monto, DateTime fechaFin, double tasa)
-        {
-		_monto = monto;
-		_fechaIni= DateTime.Now;
-            _fechaFin = fechaFin;
-		_tasa = tasa;
-		_pagado = false;
-        }
-	
-	
 
-        public PlazoFijo(int id, int id_usuario, double monto, DateTime fechaFin, double tasa, bool pagado)
+	
+        public PlazoFijo( int id_usuario, double monto, DateTime fechaIni, DateTime fechaFin, double tasa, bool pagado)
         {
-            _id_plazoFijo = id;
+            
             _id_usuario = id_usuario;
             _monto = monto;
-            _fechaIni = DateTime.Now;
+		_fechaIni = fechaIni;
             _fechaFin = fechaFin;
             _tasa = tasa;
             _pagado = pagado;
@@ -57,7 +49,8 @@ namespace TP4.Models;
 
 	private double monto;
 
-	public double _monto
+    [Range(0, double.MaxValue, ErrorMessage = "Ingrese un valor mayor a 0")]
+    public double _monto
 	{
 		get { return monto; }
 		set { monto = value; }

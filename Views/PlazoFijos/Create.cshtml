@@ -4,17 +4,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Plazo Fijo</h1>
 
-<h4>PlazoFijo</h4>
+<h4>Solicitud</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="_id_usuario" class="control-label"></label>
-                <select asp-for="_id_usuario" class ="form-control" asp-items="ViewBag._id_usuario"></select>
+                <label class="control-label">Seleccione la cuenta de retiro: </label>
+                <select name="cbu" class="form-control" asp-items="ViewBag._cbu"></select>
             </div>
             <div class="form-group">
                 <label asp-for="_monto" class="control-label"></label>
@@ -22,26 +22,45 @@
                 <span asp-validation-for="_monto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="_fechaIni" class="control-label"></label>
-                <input asp-for="_fechaIni" class="form-control" />
-                <span asp-validation-for="_fechaIni" class="text-danger"></span>
+                
+                @if (!User.IsInRole("True")) //El admin puede vencer el plazo fijo
+                {
+                    <label asp-for="_fechaIni" class="control-label"></label>
+                    <input asp-for="_fechaIni" readonly value=@DateTime.Now.ToString("yyyy-MM-ddThh:mm") class="form-control" />
+                    <span asp-validation-for="_fechaIni" class="text-danger"></span>
+                }
+                else
+                {
+                    <label asp-for="_fechaIni" class="control-label"></label>
+                    <input asp-for="_fechaIni" class="form-control" />
+                    <span asp-validation-for="_fechaIni" class="text-danger"></span>
+                }
+
+            
             </div>
+
             <div class="form-group">
                 <label asp-for="_fechaFin" class="control-label"></label>
-                <input asp-for="_fechaFin" class="form-control" />
+                @if (!User.IsInRole("True")) //El admin puede vencer el plazo fijo
+                {
+
+                    <input asp-for="_fechaFin" class="form-control" min="@DateTime.Now.AddDays(31).ToString("yyyy-MM-ddThh:mm")"  />
+                }
+                else
+                {
+                    <input asp-for="_fechaFin" class="form-control" />
+                }
+
                 <span asp-validation-for="_fechaFin" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="_tasa" class="control-label"></label>
-                <input asp-for="_tasa" class="form-control" />
+                <input readonly asp-for="_tasa" value="1.5" class="form-control" />
                 <span asp-validation-for="_tasa" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="_pagado" /> @Html.DisplayNameFor(model => model._pagado)
-                </label>
-            </div>
+
             <div class="form-group">
+                <input type="hidden" name="id" value="@ViewBag.id" />
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -49,9 +68,15 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <span class="text-danger">@ViewBag.mensaje</span>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
