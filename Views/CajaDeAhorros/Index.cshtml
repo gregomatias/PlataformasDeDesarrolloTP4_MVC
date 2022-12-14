@@ -36,6 +36,7 @@
                 <td>
                     <a asp-action="Depositar" asp-route-id="@ViewBag.id" asp-route-id_caja="@item._id_caja">Depositar</a>
                     <span style="color:black">|</span> <a asp-action="Retirar" asp-route-id="@ViewBag.id" asp-route-id_caja="@item._id_caja">Retirar</a>
+                    <span style="color:black">|</span> <a asp-action="Transferir" asp-route-id="@ViewBag.id" asp-route-id_caja="@item._id_caja">Transferir</a>
                     @if (User.IsInRole("True")) //Solo el admin
                     {
                         <span style="color:black">|</span> <a asp-action="Edit" asp-route-id="@item._id_caja">Edit</a>

@@ -218,18 +218,18 @@ namespace TP4.Controllers
         //Post Depositar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Depositar(int id,int _id_caja, double _saldo)
+        public async Task<IActionResult> Depositar(int id, int _id_caja, double _saldo)
 
         {
             CajaDeAhorro cajaDeAhorro = _context.cajas.Where(c => c._id_caja == _id_caja).FirstOrDefault();
-            
+
             cajaDeAhorro._saldo = cajaDeAhorro._saldo + Math.Abs(_saldo);
 
             Movimiento movimiento = new Movimiento(_id_caja, "Deposito", _saldo, DateTime.Now);
             cajaDeAhorro._movimientos.Add(movimiento);
             _context.movimientos.Add(movimiento);
 
-            if ( cajaDeAhorro==null)
+            if (cajaDeAhorro == null)
             {
                 return Problem("Ocurrio un problema, consulte con el administrador");
             }
@@ -275,7 +275,7 @@ namespace TP4.Controllers
             return View(cajaDeAhorro);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Retirar(int id, int _id_caja, double _saldo)
@@ -289,9 +289,9 @@ namespace TP4.Controllers
             cajaDeAhorro._movimientos.Add(movimiento);
             _context.movimientos.Add(movimiento);
 
-            if (cajaDeAhorro==null)
+            if (cajaDeAhorro == null)
             {
-               
+
                 return Problem("Ocurrio un problema, consulte con el administrador");
             }
 
@@ -305,6 +305,90 @@ namespace TP4.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!CajaDeAhorroExists(cajaDeAhorro._id_caja))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", new { id = id });
+            }
+
+            return RedirectToAction("Index", new { id = id });
+        }
+
+
+        public async Task<IActionResult> Transferir(int? id, int? id_caja)
+        {
+            if (id_caja == null || _context.cajas == null)
+            {
+                return NotFound();
+            }
+
+            var cajaDeAhorro = await _context.cajas.FindAsync(id_caja);
+            if (cajaDeAhorro == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["_cbu"] = new SelectList(_context.cajas.ToList(), "_cbu", "_cbu");
+            ViewBag.id = id;
+            ViewData["mensaje"] = "";
+            return View(cajaDeAhorro);
+        }
+
+        //Post Depositar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Transferir(int id, int _id_caja, double montoTransferencia, string cbuDestino)
+
+        {
+            CajaDeAhorro cajaDeAhorroOrigen = _context.cajas.Where(c => c._id_caja == _id_caja).FirstOrDefault();
+            CajaDeAhorro cajaDeAhorroDestino = _context.cajas.Where(c => c._cbu == cbuDestino).FirstOrDefault();
+
+
+
+
+
+            if (cajaDeAhorroOrigen == null || cajaDeAhorroDestino == null)
+            {
+                return Problem("Ocurrio un problema, consulte con el administrador");
+            }
+
+
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (cajaDeAhorroOrigen._saldo >= montoTransferencia)
+                    {
+
+                        cajaDeAhorroOrigen._saldo -= montoTransferencia;
+                        cajaDeAhorroDestino._saldo += montoTransferencia;
+
+                        Movimiento movimientoOrigen = new Movimiento(_id_caja, "Retirpo por Transferencia", montoTransferencia, DateTime.Now);
+                        Movimiento movimientoDestino = new Movimiento(_id_caja, "Acreditación por Transferencia", montoTransferencia, DateTime.Now);
+                        cajaDeAhorroOrigen._movimientos.Add(movimientoOrigen);
+                        cajaDeAhorroDestino._movimientos.Add(movimientoDestino);
+                        _context.movimientos.Add(movimientoOrigen);
+                        _context.movimientos.Add(movimientoDestino);
+                        _context.Update(cajaDeAhorroOrigen);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        ViewData["mensaje"] = "Saldo insuficiente";
+                        ViewData["_cbu"] = new SelectList(_context.cajas.ToList(), "_cbu", "_cbu");
+                        ViewBag.id = id;
+                        return View(cajaDeAhorroOrigen);
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CajaDeAhorroExists(cajaDeAhorroOrigen._id_caja))
                     {
                         return NotFound();
                     }

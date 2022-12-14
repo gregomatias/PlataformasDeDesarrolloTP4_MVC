@@ -1,0 +1,52 @@
+﻿@model TP4.Models.CajaDeAhorro
+
+@{
+    ViewData["Title"] = "Depositar";
+}
+
+<h1>Transferencia</h1>
+
+<h4>CajaDeAhorro Origen: @Model._cbu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Transferir">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="_id_caja" />
+            <div class="form-group">
+                <input type="hidden" asp-for="_cbu" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="_saldo" class="control-label">Saldo de su cuenta:</label>
+                <input readonly asp-for="_saldo" class="form-control" />
+                <span asp-validation-for="_saldo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Monto a transferir:</label>
+                <input name="montoTransferencia" class="form-control" />
+                <span asp-validation-for="_saldo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Seleccione la cuenta destino: </label>
+                <select name="cbuDestino" class="form-control" asp-items="ViewBag._cbu"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <span class="text-danger">@ViewBag.mensaje</span>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
