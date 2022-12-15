@@ -223,7 +223,7 @@ namespace TP4.Controllers
             }
             if (diffResult.Days >= 30)
             {
-                double monto = (plazoFijo._monto * plazoFijo._tasa) * diffResult.Days + plazoFijo._monto;
+                double monto = plazoFijo._monto + (plazoFijo._monto * (plazoFijo._tasa/365) * diffResult.Days); 
                 caja._saldo += monto;
                 plazoFijo._pagado = true;
                 Movimiento movimiento = new Movimiento(caja._id_caja, "Acreditación PLazo Fijo", monto, DateTime.Now);
