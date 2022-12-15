@@ -2,13 +2,42 @@
 
 @{
     ViewData["Title"] = "Index";
+
 }
 
-<h1>Index</h1>
+<h1>Listado de Movimientos</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Detalle</label>
+                <input name="filtroDetalle" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">_fecha</label>
+                <input name="filtroFecha" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">_monto</label>
+                <input name="filtroMonto" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Buscar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -28,26 +57,23 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item._cajaDeAhorro._cbu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._detalle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._monto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item._fecha)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item._id_Movimiento">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item._id_Movimiento">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item._id_Movimiento">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item._cajaDeAhorro._cbu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._detalle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._monto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item._fecha)
+                </td>
+
+            </tr>
+        }
     </tbody>
 </table>
