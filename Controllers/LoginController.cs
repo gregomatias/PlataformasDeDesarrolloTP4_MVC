@@ -42,7 +42,7 @@ namespace TP4.Controllers
             try
             {
                 //&& !u._bloqueado && u._password == _password
-             //   var usuario = await _context.usuarios.FirstOrDefaultAsync(u => u._dni == _dni);
+                //   var usuario = await _context.usuarios.FirstOrDefaultAsync(u => u._dni == _dni);
                 var usuario = await _context.usuarios.FirstOrDefaultAsync(m => m._dni == _dni);
 
 
@@ -94,7 +94,7 @@ namespace TP4.Controllers
                             return RedirectToAction("Index", "Login", new { mensaje = "Usuario Bloquedo" });
                         }
 
-                        
+
 
                     }
                 }
@@ -107,8 +107,64 @@ namespace TP4.Controllers
             }
             catch (Exception ex) { }
 
-            return RedirectToAction("Index", "Login", new { mensaje = "Intentos fallidos"  });
+            return RedirectToAction("Index", "Login", new { mensaje = "Intentos fallidos" });
         }
+
+        // GET: Usuarios/Edit/5
+        public async Task<IActionResult> Registro()
+        {
+
+
+
+            return View();
+        }
+
+        // POST: Usuarios/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registro(int _dni, string _nombre, string _apellido, string _mail, string _password)
+        {
+
+            var usuario = await _context.usuarios.FirstOrDefaultAsync(m => m._dni == _dni);
+
+
+
+
+            if (usuario == null)
+            {
+                usuario = new(_dni, _nombre, _apellido, _mail, _password, 0, false, false);
+
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Add(usuario);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+
+                        throw;
+
+                    }
+                    return RedirectToAction("Index", "Login", new { mensaje = "Registro exitoso" });
+                }
+
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login", new { mensaje = "El usuario ya existe" });
+            }
+
+            return RedirectToAction("Index", "Login", new { mensaje = "Ocurrio un error al registrarse" });
+
+        }
+
 
         public async Task<IActionResult> Salir()
         {

@@ -33,7 +33,7 @@ public class Usuario
     public Usuario() { }
 
 
-    public Usuario(int id, int dni, string nombre, string apellido, string mail, string password,  int intentosFallidos, bool esUsuarioAdmin, bool bloqueado)
+    public Usuario( int dni, string nombre, string apellido, string mail, string password,  int intentosFallidos, bool esUsuarioAdmin, bool bloqueado)
     {
 
         _id_usuario = id;
