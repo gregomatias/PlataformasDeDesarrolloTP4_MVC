@@ -199,11 +199,12 @@ namespace TP4.Controllers
                 return Problem("Entity set 'MyContext.tarjetas'  is null.");
             }
             var tarjetaDeCredito = await _context.tarjetas.FindAsync(_id_tarjeta);
-           
+
 
             if (tarjetaDeCredito != null)
             {
-                if (tarjetaDeCredito._consumos == 0){
+                if (tarjetaDeCredito._consumos == 0)
+                {
 
                     _context.tarjetas.Remove(tarjetaDeCredito);
                     await _context.SaveChangesAsync();
@@ -214,7 +215,7 @@ namespace TP4.Controllers
                     ViewData["mensaje"] = "La tarjeta debe estar en cero para poder cancelarla";
                     return View(tarjetaDeCredito);
                 }
-              
+
             }
 
 

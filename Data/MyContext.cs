@@ -142,6 +142,7 @@ public class MyContext : DbContext
                 plazo.Property(c => c._metodo).HasColumnType("nvarchar(200)");
                 plazo.Property(c => c._detalle).HasColumnType("nvarchar(200)");
                 plazo.Property(c => c._id_metodo).HasColumnType("bigint");
+
             });
 
         //DEFINICIÓN DE LA RELACIÓN ONE TO MANY USUARIO -> DOMICILIO

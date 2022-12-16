@@ -1,0 +1,62 @@
+﻿@model TP4.Models.Pago
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Pagar</h1>
+
+<h4>Pago de servicios</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Pagar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Seleccione la cuenta de pago: </label>
+                <select name="cbu" class="form-control" asp-items="ViewBag.cajas">
+                    <option></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Seleccione una tarjeta: </label>
+                <select name="numeroTarjeta"   class="form-control" asp-items="ViewBag.tarjetas">
+                    <option></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="_monto" class="control-label">Monto Servicio a pagar:</label>
+                <input  readonly asp-for="_monto" class="form-control" />
+                <span asp-validation-for="_monto" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="_detalle" class="control-label">Detalle del servicio:</label>
+                <input readonly asp-for="_detalle" class="form-control" />
+                <span asp-validation-for="_detalle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+               
+                <input type="hidden" asp-for="_id_pago" class="form-control" />
+              
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Pagar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <span class="text-danger">@ViewBag.mensaje</span>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id="@ViewBag.id">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
