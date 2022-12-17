@@ -23,34 +23,37 @@ namespace TP4.Controllers
 
         // GET: Usuarios
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
 
-         
+
+            ViewBag.id = id;
             return View(await _context.usuarios.ToListAsync());
         }
 
         // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int id_usuario)
         {
-            if (id == null || _context.usuarios == null)
+            if (id_usuario == null || _context.usuarios == null)
             {
                 return NotFound();
             }
 
             var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(m => m._id_usuario == id);
+                .FirstOrDefaultAsync(m => m._id_usuario == id_usuario);
             if (usuario == null)
             {
                 return NotFound();
             }
 
+            ViewBag.id = id;
             return View(usuario);
         }
 
         // GET: Usuarios/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
+            ViewBag.id = id;
             return View();
         }
 
@@ -59,7 +62,7 @@ namespace TP4.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("_id_usuario,_dni,_nombre,_apellido,_mail,_password,_intentosFallidos,_esUsuarioAdmin,_bloqueado")] Usuario usuario)
+        public async Task<IActionResult> Create(int id,[Bind("_id_usuario,_dni,_nombre,_apellido,_mail,_password,_intentosFallidos,_esUsuarioAdmin,_bloqueado")] Usuario usuario)
         {
 
    
@@ -70,24 +73,25 @@ namespace TP4.Controllers
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = id });
             }
             return View(usuario);
         }
 
         // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id,int? id_usuario)
         {
-            if (id == null || _context.usuarios == null)
+            if (id_usuario == null || _context.usuarios == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.usuarios.FindAsync(id);
+            var usuario = await _context.usuarios.FindAsync(id_usuario);
             if (usuario == null)
             {
                 return NotFound();
             }
+            ViewBag.id = id;
             return View(usuario);
         }
 
@@ -98,10 +102,7 @@ namespace TP4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("_id_usuario,_dni,_nombre,_apellido,_mail,_password,_intentosFallidos,_esUsuarioAdmin,_bloqueado")] Usuario usuario)
         {
-            if (id != usuario._id_usuario)
-            {
-                return NotFound();
-            }
+
 
             if (ModelState.IsValid)
             {
@@ -121,46 +122,47 @@ namespace TP4.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ViewBag.id = id;
+                return RedirectToAction("Index", new { id = id });
             }
+            ViewBag.id = id;
             return View(usuario);
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id , int id_usuario)
         {
-            if (id == null || _context.usuarios == null)
-            {
-                return NotFound();
-            }
+ 
 
             var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(m => m._id_usuario == id);
+                .FirstOrDefaultAsync(m => m._id_usuario == id_usuario);
             if (usuario == null)
             {
                 return NotFound();
             }
-
+            ViewBag.id = id;
             return View(usuario);
         }
 
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id,int _id_usuario)
         {
             if (_context.usuarios == null)
             {
                 return Problem("Entity set 'MyContext.usuarios'  is null.");
             }
-            var usuario = await _context.usuarios.FindAsync(id);
+            var usuario = await _context.usuarios.FindAsync(_id_usuario);
             if (usuario != null)
             {
                 _context.usuarios.Remove(usuario);
             }
-            
+
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            ViewBag.id = id;
+            return RedirectToAction("Index", new { id = id });
         }
 
         private bool UsuarioExists(int id)

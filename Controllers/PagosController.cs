@@ -136,14 +136,14 @@ namespace TP4.Controllers
                 }
                 else
                 {
-                    ViewBag.id = _id_usuario;
+                    ViewBag.id = id;
                     ViewData["mensaje"] = "El pago  debe estar pagado para poder eliminarlo";
                     return View(pago);
                 }
             }
 
 
-            return RedirectToAction("Index", new { id = _id_usuario });
+            return RedirectToAction("Index", new { id = id });
         }
 
         private bool PagoExists(int id)

@@ -37,7 +37,8 @@ namespace TP4.Controllers
 
                 if (filtroDetalle != null || filtroMonto != null || filtroFecha != null)
                 {
-                    var modelo = _context.movimientos.ToList();
+                   
+                    var modelo = myContext.ToList();
 
                     if ( filtroDetalle != null)
                     {

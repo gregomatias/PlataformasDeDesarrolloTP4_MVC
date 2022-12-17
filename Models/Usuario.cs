@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,7 @@ public class Usuario
         set { dni = value; }
     }
 
+   
     public string _nombre
     {
         get { return nombre; }
