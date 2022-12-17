@@ -4,7 +4,6 @@
 /Migrations/
 /obj/
 /Properties/
-/wwwroot/
 /appsettings.json
 /appsettings.Development.json
 *.csproj
