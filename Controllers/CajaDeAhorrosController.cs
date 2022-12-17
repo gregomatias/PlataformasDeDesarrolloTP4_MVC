@@ -49,20 +49,17 @@ namespace TP4.Controllers
         }
 
         // GET: CajaDeAhorros/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int _id_caja)
         {
-            if (id == null || _context.cajas == null)
-            {
-                return NotFound();
-            }
+
 
             var cajaDeAhorro = await _context.cajas
-                .FirstOrDefaultAsync(m => m._id_caja == id);
+                .FirstOrDefaultAsync(m => m._id_caja == _id_caja);
             if (cajaDeAhorro == null)
             {
                 return NotFound();
             }
-
+            ViewBag.id = id;
             return View(cajaDeAhorro);
         }
 
@@ -97,7 +94,7 @@ namespace TP4.Controllers
                 _context.Add(cajaDeAhorro);
 
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
+             
 
                 return RedirectToAction("Index", new { id = id });
             }
@@ -106,18 +103,16 @@ namespace TP4.Controllers
         }
 
         // GET: CajaDeAhorros/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int _id_caja )
         {
-            if (id == null || _context.cajas == null)
-            {
-                return NotFound();
-            }
 
-            var cajaDeAhorro = await _context.cajas.FindAsync(id);
+
+            var cajaDeAhorro = await _context.cajas.FindAsync(_id_caja);
             if (cajaDeAhorro == null)
             {
                 return NotFound();
             }
+            ViewBag.id = id;
             return View(cajaDeAhorro);
         }
 
@@ -128,10 +123,7 @@ namespace TP4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("_id_caja,_cbu,_saldo")] CajaDeAhorro cajaDeAhorro)
         {
-            if (id != cajaDeAhorro._id_caja)
-            {
-                return NotFound();
-            }
+  
 
             if (ModelState.IsValid)
             {
@@ -151,46 +143,49 @@ namespace TP4.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ViewBag.id = id;
+
+                return RedirectToAction("Index", new { id = id });
             }
+            ViewBag.id = id;
             return View(cajaDeAhorro);
         }
 
         // GET: CajaDeAhorros/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id,int _id_caja)
         {
-            if (id == null || _context.cajas == null)
-            {
-                return NotFound();
-            }
+
 
             var cajaDeAhorro = await _context.cajas
-                .FirstOrDefaultAsync(m => m._id_caja == id);
+                .FirstOrDefaultAsync(m => m._id_caja == _id_caja);
             if (cajaDeAhorro == null)
             {
                 return NotFound();
             }
 
+            ViewBag.id = id;
             return View(cajaDeAhorro);
         }
 
         // POST: CajaDeAhorros/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id,int _id_caja)
         {
             if (_context.cajas == null)
             {
                 return Problem("Entity set 'MyContext.cajas'  is null.");
             }
-            var cajaDeAhorro = await _context.cajas.FindAsync(id);
+            var cajaDeAhorro = await _context.cajas.FindAsync(_id_caja);
             if (cajaDeAhorro != null)
             {
                 _context.cajas.Remove(cajaDeAhorro);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ViewBag.id = id;
+
+            return RedirectToAction("Index", new { id = id });
         }
 
         private bool CajaDeAhorroExists(int id)

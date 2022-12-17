@@ -39,9 +39,9 @@
                     <span style="color:black">|</span> <a asp-action="Transferir" asp-route-id="@ViewBag.id" asp-route-id_caja="@item._id_caja">Transferir</a>
                     @if (User.IsInRole("True")) //Solo el admin
                     {
-                        <span style="color:black">|</span> <a asp-action="Edit" asp-route-id="@item._id_caja">Edit</a>
-                        <span style="color:black">|</span> <a asp-action="Details" asp-route-id="@item._id_caja">Details</a> 
-                        <span style="color:black">|</span> <a asp-action="Delete" asp-route-id="@item._id_caja">Delete</a>
+                        <span style="color:black">|</span> <a asp-action="Edit" asp-route-id="@ViewBag.id" asp-route-_id_caja="@item._id_caja">Edit</a>
+                        <span style="color:black">|</span> <a asp-action="Details" asp-route-id="@ViewBag.id" asp-route-_id_caja="@item._id_caja">Details</a>
+                        <span style="color:black">|</span> <a asp-action="Delete" asp-route-id="@ViewBag.id" asp-route-_id_caja="@item._id_caja">Delete</a>
                     }
 
                 </td>

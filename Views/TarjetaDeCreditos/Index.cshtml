@@ -52,12 +52,7 @@
                 <td>
                     <a asp-action="Pagar" asp-route-id="@ViewBag.id" asp-route-id_tarjeta="@item._id_tarjeta">Pagar Tarjeta</a>
                     <span style="color:black">|</span>   <a asp-action="Delete" asp-route-id="@item._id_tarjeta">Solicitar Baja</a>
-                    @if (User.IsInRole("True")) //Solo el admin
-                    {
-                        <span style="color:black">|</span>  <a asp-action="Edit" asp-route-id="@item._id_tarjeta">Edit</a>
-                        <span style="color:black">|</span>  <a asp-action="Details" asp-route-id="@item._id_tarjeta">Details</a>
 
-                    }
                 </td>
             </tr>
         }

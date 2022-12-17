@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Cajas de los Usuarios</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.id">Asociar Usuario Caja</a>
 </p>
 <table class="table">
     <thead>
@@ -31,9 +31,11 @@
                 @Html.DisplayFor(modelItem => item.user._id_usuario)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "Edit",  new {  id=ViewBag.id,_id_usuario=item._id_usuario, _id_caja=item._id_caja  }) |
+                    @Html.ActionLink("Details", "Details",  new {  id=ViewBag.id,_id_usuario=item._id_usuario, _id_caja=item._id_caja  }) |
+                    @Html.ActionLink("Delete", "Delete",  new {   id=ViewBag.id, _id_usuario=item._id_usuario, _id_caja=item._id_caja  }) |
+        
+                
             </td>
         </tr>
 }
